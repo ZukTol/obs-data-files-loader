@@ -3,25 +3,25 @@ import LoaderSettingTab from './loader-settings-tab';
 
 // Remember to rename these classes and interfaces!
 
-interface MyPluginSettings {
+interface LoaderPluginSettings {
 	doLoadTxt: boolean;
 	doLoadXml: boolean;
 	doLoadJson: boolean;
 }
 
-const DEFAULT_SETTINGS: MyPluginSettings = {
+const DEFAULT_SETTINGS: LoaderPluginSettings = {
 	doLoadTxt: true,
 	doLoadXml: true,
 	doLoadJson: true
 }
 
-export default class MyPlugin extends Plugin {
-	settings: MyPluginSettings;
+export default class LoaderPlugin extends Plugin {
+	settings: LoaderPluginSettings;
 
 	async onload() {
 		await this.loadSettings();
 
-		if(this.settings.doLoadTxt)
+		if (this.settings.doLoadTxt)
 			this.registerExtensions(["txt"], "markdown");
 
 		if(this.settings.doLoadTxt)
