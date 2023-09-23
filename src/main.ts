@@ -1,5 +1,7 @@
-import { Plugin, TFile } from 'obsidian';
+import { Plugin, TFile, WorkspaceLeaf } from 'obsidian';
 import LoaderSettingTab from './loader-settings-tab';
+import { VIEW_TYPE_JSON, VIEW_TYPE_XML, VIEW_TYPE_MARKDOWN, EXT_JSON, EXT_XML, EXT_TXT } from './constants'
+import JsonView from "./JsonView";
 import { path } from "./utils";
 
 // Remember to rename these classes and interfaces!
@@ -33,7 +35,7 @@ export default class LoaderPlugin extends Plugin {
 		this.tryRegisterJson();
 
 		this.tryRegisterXml();
-
+		
 		// This adds a status bar item to the bottom of the app. Does not work on mobile apps.
 		const statusBarItemEl = this.addStatusBarItem();
 		statusBarItemEl.setText('Status Bar Text');
@@ -53,26 +55,28 @@ export default class LoaderPlugin extends Plugin {
 
 	private TryRegisterTxt() {
 		if (this.settings.doLoadTxt)
-			this.registerExtensions(["txt"], "markdown");
+			this.registerExtensions([EXT_TXT], VIEW_TYPE_MARKDOWN);
 
 		if (this.settings.doCreateTxt) 
-			this.registerContextMenuCommand("txt");
+			this.registerContextMenuCommand(EXT_TXT);
 	}
 
 	private tryRegisterJson() {
-		if (this.settings.doLoadTxt)
-			this.registerExtensions(["json"], "markdown");
-
+		if (this.settings.doLoadTxt) {
+			this.registerExtensions([EXT_JSON], VIEW_TYPE_JSON);
+			this.registerView(VIEW_TYPE_JSON, (leaf: WorkspaceLeaf) => new JsonView(leaf, this));
+		}
+		
 		if(this.settings.doCreateJson)
-			this.registerContextMenuCommand("json");
+			this.registerContextMenuCommand(EXT_JSON);
 	}
 
 	private tryRegisterXml() {
 		if (this.settings.doLoadXml)
-			this.registerExtensions(["xml"], "markdown");
+			this.registerExtensions([EXT_XML], VIEW_TYPE_MARKDOWN);
 
 		if (this.settings.doCreateXml) {
-			this.registerContextMenuCommand("xml");
+			this.registerContextMenuCommand(EXT_XML);
 		}
 	}
 
@@ -132,5 +136,3 @@ export default class LoaderPlugin extends Plugin {
 		}
 	}
 }
-
-
