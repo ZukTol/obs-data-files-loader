@@ -24,6 +24,15 @@ export default class LoaderSettingTab extends PluginSettingTab {
 				}));
 
 		new Setting(containerEl)
+			.setName('Create .txt files')
+			.addToggle(toggle => toggle
+				.setValue(this.plugin.settings.doCreateTxt)
+				.onChange(async (value) => {
+					this.plugin.settings.doCreateTxt = value;
+					await this.plugin.saveSettings();
+				}));
+
+		new Setting(containerEl)
 			.setName('Load .json files')
 			.addToggle(toggle => toggle
 				.setValue(this.plugin.settings.doLoadJson)
