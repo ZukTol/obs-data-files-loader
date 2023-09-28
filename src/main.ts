@@ -8,14 +8,18 @@ interface LoaderPluginSettings {
 	doLoadTxt: boolean;
 	doCreateTxt: boolean;
 	doLoadXml: boolean;
+	doCreateXml: boolean;
 	doLoadJson: boolean;
+	doCreateJson: boolean;
 }
 
 const DEFAULT_SETTINGS: LoaderPluginSettings = {
 	doLoadTxt: true,
 	doCreateTxt: true,
 	doLoadXml: true,
-	doLoadJson: true
+	doCreateXml: true,
+	doLoadJson: true,
+	doCreateJson: true
 }
 
 export default class LoaderPlugin extends Plugin {
@@ -26,11 +30,9 @@ export default class LoaderPlugin extends Plugin {
 
 		this.TryRegisterTxt();
 
-		if(this.settings.doLoadTxt)
-			this.registerExtensions(["json"], "markdown");
+		this.tryRegisterJson();
 
-		if (this.settings.doLoadXml)
-			this.registerExtensions(["xml"], "markdown");
+		this.tryRegisterXml();
 
 		// This adds a status bar item to the bottom of the app. Does not work on mobile apps.
 		const statusBarItemEl = this.addStatusBarItem();
@@ -53,23 +55,24 @@ export default class LoaderPlugin extends Plugin {
 		if (this.settings.doLoadTxt)
 			this.registerExtensions(["txt"], "markdown");
 
-		if (this.settings.doCreateTxt) {
-			this.registerEvent(
-				this.app.workspace.on("file-menu", (menu, file) => {
-					const parent = file instanceof TFile ? file.parent : file; 
-										
-					menu.addItem((item) => {
-						item
-							.setTitle("Create .txt file")
-							.setIcon("document")
-							.onClick(async () => {
-								console.log(parent?.path);
-								if(parent)
-									await this.createFile(parent.path, 'txt');
-							});
-					});
-				})
-			);
+		if (this.settings.doCreateTxt) 
+			this.registerContextMenuCommand("txt");
+	}
+
+	private tryRegisterJson() {
+		if (this.settings.doLoadTxt)
+			this.registerExtensions(["json"], "markdown");
+
+		if(this.settings.doCreateJson)
+			this.registerContextMenuCommand("json");
+	}
+
+	private tryRegisterXml() {
+		if (this.settings.doLoadXml)
+			this.registerExtensions(["xml"], "markdown");
+
+		if (this.settings.doCreateXml) {
+			this.registerContextMenuCommand("xml");
 		}
 	}
 
@@ -85,7 +88,26 @@ export default class LoaderPlugin extends Plugin {
 		await this.saveData(this.settings);
 	}
 	
-	async createFile(dirPath: string, extension: string): Promise<void> {
+	private registerContextMenuCommand(fileExt: string): void {
+		this.registerEvent(
+			this.app.workspace.on("file-menu", (menu, file) => {
+				const parent = file instanceof TFile ? file.parent : file;
+
+				menu.addItem((item) => {
+					item
+						.setTitle(`Create .${fileExt} file`)
+						.setIcon("document")
+						.onClick(async () => {
+							console.log(parent?.path);
+							if(parent)
+								await this.createFile(parent.path, fileExt);
+						});
+				});
+			})
+		);
+	}
+	
+	private async createFile(dirPath: string, extension: string): Promise<void> {
 		const { vault } = this.app;
 		const { adapter } = vault;
 		const name = "Unknown";
