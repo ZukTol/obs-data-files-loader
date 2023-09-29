@@ -42,11 +42,29 @@ export default class LoaderSettingTab extends PluginSettingTab {
 				}));
 
 		new Setting(containerEl)
+			.setName('Create .json files')
+			.addToggle(toggle => toggle
+				.setValue(this.plugin.settings.doCreateJson)
+				.onChange(async (value) => {
+					this.plugin.settings.doCreateJson = value;
+					await this.plugin.saveSettings();
+				}));
+
+		new Setting(containerEl)
 			.setName('Load .xml files')
 			.addToggle(toggle => toggle
 				.setValue(this.plugin.settings.doLoadXml)
 				.onChange(async (value) => {
 					this.plugin.settings.doLoadXml = value;
+					await this.plugin.saveSettings();
+				}));
+
+		new Setting(containerEl)
+			.setName('Create .xml files')
+			.addToggle(toggle => toggle
+				.setValue(this.plugin.settings.doCreateXml)
+				.onChange(async (value) => {
+					this.plugin.settings.doCreateXml = value;
 					await this.plugin.saveSettings();
 				}));
 	}
