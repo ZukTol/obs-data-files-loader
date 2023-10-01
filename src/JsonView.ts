@@ -5,10 +5,12 @@ import LoaderPlugin from "./main";
 export default class JsonView extends TextFileView {
 
 	public plugin: LoaderPlugin;
+	private cmEditor: any; 
 
 	constructor(leaf: WorkspaceLeaf, plugin: LoaderPlugin) {
 		super(leaf);
 		this.plugin = plugin;
+		this.cmEditor = window.CodeMirror;
 	}
 
 	// gets the title of the document
