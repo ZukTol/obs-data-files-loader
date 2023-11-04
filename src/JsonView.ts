@@ -6,7 +6,7 @@ import * as CodeMirror from "codemirror";
 export default class JsonView extends TextFileView {
 
 	public plugin: LoaderPlugin;
-	private cmEditorFactory: any; 
+	private readonly cmEditorFactory: any; 
 	private cmEditor: any | CodeMirror.Editor;
 	private editorEl: any;
 
@@ -16,19 +16,20 @@ export default class JsonView extends TextFileView {
 		this.cmEditorFactory = window.CodeMirror;
 	}
 
-	onload() {
+	onload(): void {
 		super.onload();
-		this.editorEl = super.contentEl.createDiv("markdown-source-view mod-cm5");
+		this.editorEl = this.contentEl.createDiv("markdown-source-view mod-cm5");
 		this.cmEditor = this.cmEditorFactory(this.editorEl, {
 			mode: "hypermd",
 			theme: "obsidian",
 			lineWrapping: !0,
 			styleActiveLine: !0,
 		});
+		this.app.workspace.trigger("codemirror", this.cmEditor);
 	}
 
 	// gets the title of the document
-	getDisplayText() {
+	getDisplayText(): string {
 		if (this.file) {
 			return this.file.basename;
 		}
@@ -46,6 +47,10 @@ export default class JsonView extends TextFileView {
 		return VIEW_TYPE_JSON;
 	}
 
+	onClose(): Promise<void> {
+		return super.onClose();
+	}
+	
 	setViewData(data: string, clear: boolean): void {
 		const n = this.cmEditor;
 		// if (clear)
