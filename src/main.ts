@@ -3,6 +3,8 @@ import LoaderSettingTab from './loader-settings-tab';
 import { VIEW_TYPE_JSON, VIEW_TYPE_XML, VIEW_TYPE_MARKDOWN, EXT_JSON, EXT_XML, EXT_TXT } from './constants'
 import JsonView from "./JsonView";
 import { path } from "./utils";
+import {json, jsonLanguage} from '@codemirror/lang-json';
+import {EditorState, Compartment} from "@codemirror/state"
 
 // Remember to rename these classes and interfaces!
 
@@ -42,15 +44,6 @@ export default class LoaderPlugin extends Plugin {
 
 		// This adds a settings tab so the user can configure various aspects of the plugin
 		this.addSettingTab(new LoaderSettingTab(this.app, this));
-
-		// If the plugin hooks up any global DOM events (on parts of the app that doesn't belong to this plugin)
-		// Using this function will automatically remove the event listener when this plugin is disabled.
-		this.registerDomEvent(document, 'click', (evt: MouseEvent) => {
-			console.log('click', evt);
-		});
-
-		// When registering intervals, this function will automatically clear the interval when the plugin is disabled.
-		this.registerInterval(window.setInterval(() => console.log('setInterval'), 5 * 60 * 1000));
 	}
 
 	private TryRegisterTxt() {
@@ -63,10 +56,13 @@ export default class LoaderPlugin extends Plugin {
 
 	private tryRegisterJson() {
 		if (this.settings.doLoadTxt) {
+			const language = new Compartment;
+			
+			// this.registerEditorExtension(language.of(json()));
 			this.registerExtensions([EXT_JSON], VIEW_TYPE_JSON);
 			this.registerView(VIEW_TYPE_JSON, (leaf: WorkspaceLeaf) => new JsonView(leaf, this));
 		}
-		
+		 
 		if(this.settings.doCreateJson)
 			this.registerContextMenuCommand(EXT_JSON);
 	}

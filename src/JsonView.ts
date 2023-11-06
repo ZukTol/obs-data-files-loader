@@ -6,8 +6,8 @@ import * as CodeMirror from "codemirror";
 export default class JsonView extends TextFileView {
 
 	public plugin: LoaderPlugin;
-	private readonly cmEditorFactory: any; 
-	private cmEditor: any | CodeMirror.Editor;
+	private readonly cmEditorFactory: (place: ParentNode | ((host: HTMLElement)=>void), options?: CodeMirror.EditorConfiguration )=> CodeMirror.Editor; 
+	private cmEditor: CodeMirror.Editor;
 	private editorEl: any;
 
 	constructor(leaf: WorkspaceLeaf, plugin: LoaderPlugin) {
@@ -18,12 +18,12 @@ export default class JsonView extends TextFileView {
 
 	onload(): void {
 		super.onload();
-		this.editorEl = this.contentEl.createDiv("markdown-source-view mod-cm5");
+		this.editorEl = this.contentEl.createDiv("mod-cm5");
 		this.cmEditor = this.cmEditorFactory(this.editorEl, {
-			mode: "hypermd",
-			theme: "obsidian",
-			lineWrapping: !0,
-			styleActiveLine: !0,
+			mode: "application/json", 
+			theme: "default",
+			lineWrapping: false,
+			lineNumbers: true
 		});
 		this.app.workspace.trigger("codemirror", this.cmEditor);
 	}
