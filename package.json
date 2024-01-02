@@ -22,6 +22,7 @@
 		"typescript": "4.7.4"
 	},
 	"dependencies": {
-		"@codemirror/lang-json": "^6.0.1"
+		"@codemirror/lang-json": "^6.0.1",
+		"codemirror": "^6.0.1"
 	}
 }
