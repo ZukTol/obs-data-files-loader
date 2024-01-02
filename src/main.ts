@@ -3,10 +3,6 @@ import LoaderSettingTab from './loader-settings-tab';
 import { VIEW_TYPE_JSON, VIEW_TYPE_XML, VIEW_TYPE_MARKDOWN, EXT_JSON, EXT_XML, EXT_TXT } from './constants'
 import JsonView from "./JsonView";
 import { path } from "./utils";
-import {json, jsonLanguage} from '@codemirror/lang-json';
-import {EditorState, Compartment} from "@codemirror/state"
-
-// Remember to rename these classes and interfaces!
 
 interface LoaderPluginSettings {
 	doLoadTxt: boolean;
@@ -56,9 +52,6 @@ export default class LoaderPlugin extends Plugin {
 
 	private tryRegisterJson() {
 		if (this.settings.doLoadTxt) {
-			const language = new Compartment;
-			
-			// this.registerEditorExtension(language.of(json()));
 			this.registerExtensions([EXT_JSON], VIEW_TYPE_JSON);
 			this.registerView(VIEW_TYPE_JSON, (leaf: WorkspaceLeaf) => new JsonView(leaf, this));
 		}
