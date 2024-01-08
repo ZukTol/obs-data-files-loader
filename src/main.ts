@@ -1,8 +1,9 @@
 import { Plugin, TFile, WorkspaceLeaf } from 'obsidian';
 import LoaderSettingTab from './loader-settings-tab';
 import { VIEW_TYPE_JSON, VIEW_TYPE_XML, VIEW_TYPE_MARKDOWN, EXT_JSON, EXT_XML, EXT_TXT } from './constants'
-import JsonView from "./JsonView";
+import JsonView from "./views/jsonView";
 import { path } from "./utils";
+import XmlView from "./views/xmlView";
 
 interface LoaderPluginSettings {
 	doLoadTxt: boolean;
@@ -61,8 +62,10 @@ export default class LoaderPlugin extends Plugin {
 	}
 
 	private tryRegisterXml() {
-		if (this.settings.doLoadXml)
-			this.registerExtensions([EXT_XML], VIEW_TYPE_MARKDOWN);
+		if (this.settings.doLoadXml) {
+			this.registerExtensions([EXT_XML], VIEW_TYPE_XML);
+			this.registerView(VIEW_TYPE_XML, (leaf: WorkspaceLeaf) => new XmlView(leaf, this));
+		}
 
 		if (this.settings.doCreateXml) {
 			this.registerContextMenuCommand(EXT_XML);

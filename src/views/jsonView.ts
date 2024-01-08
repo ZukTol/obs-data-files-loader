@@ -2,8 +2,8 @@ import { TextFileView, WorkspaceLeaf } from "obsidian";
 import { basicSetup, EditorView } from "codemirror";
 import { json } from "@codemirror/lang-json";
 import { EditorState } from "@codemirror/state";
-import { VIEW_TYPE_JSON } from './constants'
-import LoaderPlugin from "./main";
+import { VIEW_TYPE_JSON } from '../constants'
+import LoaderPlugin from "../main";
 
 export default class JsonView extends TextFileView {
 
