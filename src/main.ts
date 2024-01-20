@@ -1,8 +1,9 @@
 import { Plugin, TFile, WorkspaceLeaf } from 'obsidian';
 import LoaderSettingTab from './loader-settings-tab';
-import { VIEW_TYPE_JSON, VIEW_TYPE_XML, VIEW_TYPE_MARKDOWN, EXT_JSON, EXT_XML, EXT_TXT } from './constants'
-import JsonView from "./JsonView";
+import * as constants from './constants'
 import { path } from "./utils";
+import JsonView from "./views/JsonView";
+import TxtView from "./views/TxtView";
 
 interface LoaderPluginSettings {
 	doLoadTxt: boolean;
@@ -43,29 +44,31 @@ export default class LoaderPlugin extends Plugin {
 	}
 
 	private TryRegisterTxt() {
-		if (this.settings.doLoadTxt)
-			this.registerExtensions([EXT_TXT], VIEW_TYPE_MARKDOWN);
+		if (this.settings.doLoadTxt) {
+			this.registerView(constants.VIEW_TYPE_TXT, (leaf: WorkspaceLeaf) => new TxtView(leaf, this));
+			this.registerExtensions([constants.EXT_TXT], constants.VIEW_TYPE_TXT);
+		}
 
 		if (this.settings.doCreateTxt) 
-			this.registerContextMenuCommand(EXT_TXT);
+			this.registerContextMenuCommand(constants.EXT_TXT);
 	}
 
 	private tryRegisterJson() {
 		if (this.settings.doLoadTxt) {
-			this.registerExtensions([EXT_JSON], VIEW_TYPE_JSON);
-			this.registerView(VIEW_TYPE_JSON, (leaf: WorkspaceLeaf) => new JsonView(leaf, this));
+			this.registerView(constants.VIEW_TYPE_JSON, (leaf: WorkspaceLeaf) => new JsonView(leaf, this));
+			this.registerExtensions([constants.EXT_JSON], constants.VIEW_TYPE_JSON);
 		}
 		 
 		if(this.settings.doCreateJson)
-			this.registerContextMenuCommand(EXT_JSON);
+			this.registerContextMenuCommand(constants.EXT_JSON);
 	}
 
 	private tryRegisterXml() {
 		if (this.settings.doLoadXml)
-			this.registerExtensions([EXT_XML], VIEW_TYPE_MARKDOWN);
+			this.registerExtensions([constants.EXT_XML], constants.VIEW_TYPE_TXT);
 
 		if (this.settings.doCreateXml) {
-			this.registerContextMenuCommand(EXT_XML);
+			this.registerContextMenuCommand(constants.EXT_XML);
 		}
 	}
 

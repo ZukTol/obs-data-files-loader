@@ -1,11 +1,10 @@
 import { TextFileView, WorkspaceLeaf } from "obsidian";
 import { basicSetup, EditorView } from "codemirror";
-import { json } from "@codemirror/lang-json";
 import { EditorState } from "@codemirror/state";
-import { VIEW_TYPE_JSON } from './constants'
-import LoaderPlugin from "./main";
+import { VIEW_TYPE_TXT } from '../constants'
+import LoaderPlugin from "../main";
 
-export default class JsonView extends TextFileView {
+export default class TxtView extends TextFileView {
 
 	public plugin: LoaderPlugin;
 	private cmEditor: EditorView;
@@ -23,7 +22,6 @@ export default class JsonView extends TextFileView {
 			state: EditorState.create({
 				extensions: [
 					basicSetup,
-					json()
 				],
 			}),
 			parent: this.editorEl,
@@ -47,7 +45,7 @@ export default class JsonView extends TextFileView {
 	}
 
 	getViewType(): string {
-		return VIEW_TYPE_JSON;
+		return VIEW_TYPE_TXT;
 	}
 
 	onClose(): Promise<void> {
