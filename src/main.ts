@@ -2,29 +2,12 @@ import { Plugin, TFile, WorkspaceLeaf } from 'obsidian';
 import LoaderSettingTab from './loader-settings-tab';
 import * as constants from './constants'
 import { path } from "./utils";
-import JsonView from "./views/JsonView";
-import TxtView from "./views/TxtView";
-
-interface LoaderPluginSettings {
-	doLoadTxt: boolean;
-	doCreateTxt: boolean;
-	doLoadXml: boolean;
-	doCreateXml: boolean;
-	doLoadJson: boolean;
-	doCreateJson: boolean;
-}
-
-const DEFAULT_SETTINGS: LoaderPluginSettings = {
-	doLoadTxt: true,
-	doCreateTxt: true,
-	doLoadXml: true,
-	doCreateXml: true,
-	doLoadJson: true,
-	doCreateJson: true
-}
+import JsonView from "./views/json-view";
+import TxtView from "./views/txt-view";
+import { DEFAULT_SETTINGS, PluginSettings } from "./setting-data";
 
 export default class LoaderPlugin extends Plugin {
-	settings: LoaderPluginSettings;
+	settings: PluginSettings;
 
 	async onload() {
 		await this.loadSettings();
@@ -44,17 +27,17 @@ export default class LoaderPlugin extends Plugin {
 	}
 
 	private TryRegisterTxt() {
-		if (this.settings.doLoadTxt) {
+		if (this.settings.txtSetting.doLoad) {
 			this.registerView(constants.VIEW_TYPE_TXT, (leaf: WorkspaceLeaf) => new TxtView(leaf, this));
 			this.registerExtensions([constants.EXT_TXT], constants.VIEW_TYPE_TXT);
 		}
 
-		if (this.settings.doCreateTxt) 
+		if (this.settings.txtSetting.doCreate) 
 			this.registerContextMenuCommand(constants.EXT_TXT);
 	}
 
 	private tryRegisterJson() {
-		if (this.settings.doLoadTxt) {
+		if (this.settings.doLoadJson) {
 			this.registerView(constants.VIEW_TYPE_JSON, (leaf: WorkspaceLeaf) => new JsonView(leaf, this));
 			this.registerExtensions([constants.EXT_JSON], constants.VIEW_TYPE_JSON);
 		}

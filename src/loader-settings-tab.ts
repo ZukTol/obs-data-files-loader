@@ -1,5 +1,6 @@
 import { App, PluginSettingTab, Setting } from 'obsidian';
 import LoaderPlugin from './main'
+import { LineNumbersSetting } from "./setting-data";
 
 export default class LoaderSettingTab extends PluginSettingTab {
 	plugin: LoaderPlugin;
@@ -14,24 +15,41 @@ export default class LoaderSettingTab extends PluginSettingTab {
 
 		containerEl.empty();
 
+		this.containerEl.createEl("h2", { text: "TXT files" });
+		
 		new Setting(containerEl)
 			.setName('Load .txt files')
 			.addToggle(toggle => toggle
-				.setValue(this.plugin.settings.doLoadTxt)
+				.setValue(this.plugin.settings.txtSetting.doLoad)
 				.onChange(async (value) => {
-					this.plugin.settings.doLoadTxt = value;
+					this.plugin.settings.txtSetting.doLoad = value;
 					await this.plugin.saveSettings();
 				}));
 
 		new Setting(containerEl)
+			.setName('Show line numbers')
+			.addDropdown(cb=>cb
+				.addOption(LineNumbersSetting[LineNumbersSetting.System], "System value")
+				.addOption(LineNumbersSetting[LineNumbersSetting.No], "No")
+				.addOption(LineNumbersSetting[LineNumbersSetting.Yes], "Yes")
+				.setValue(LineNumbersSetting[this.plugin.settings.txtSetting.lineNumbers])
+				.onChange(async (value: string)=>{
+					this.plugin.settings.txtSetting.lineNumbers = LineNumbersSetting[value as keyof typeof LineNumbersSetting];
+					await this.plugin.saveSettings();
+				})
+			);
+		
+		new Setting(containerEl)
 			.setName('Create .txt files')
 			.addToggle(toggle => toggle
-				.setValue(this.plugin.settings.doCreateTxt)
+				.setValue(this.plugin.settings.txtSetting.doCreate)
 				.onChange(async (value) => {
-					this.plugin.settings.doCreateTxt = value;
+					this.plugin.settings.txtSetting.doCreate = value;
 					await this.plugin.saveSettings();
 				}));
 
+		this.containerEl.createEl("h2", { text: "JSON files" });
+		
 		new Setting(containerEl)
 			.setName('Load .json files')
 			.addToggle(toggle => toggle
@@ -50,6 +68,8 @@ export default class LoaderSettingTab extends PluginSettingTab {
 					await this.plugin.saveSettings();
 				}));
 
+		this.containerEl.createEl("h2", { text: "XML files" });
+		
 		new Setting(containerEl)
 			.setName('Load .xml files')
 			.addToggle(toggle => toggle
