@@ -4,14 +4,14 @@ export enum LineNumbersSetting {
 	Yes = -1
 }
 
-export interface PluginViewSettings {
+export interface ExtSettings {
 	doCreate: boolean,
 	doLoad: boolean,
 	lineNumbers: LineNumbersSetting
 }
 
 export interface PluginSettings {
-	txtSetting: PluginViewSettings
+	txtSetting: ExtSettings
 	doLoadXml: boolean;
 	doCreateXml: boolean;
 	doLoadJson: boolean;

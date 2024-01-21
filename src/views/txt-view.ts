@@ -1,10 +1,10 @@
-import { TextFileView, View, WorkspaceLeaf } from "obsidian";
+import { TextFileView, WorkspaceLeaf } from "obsidian";
 import { basicSetup, EditorView, minimalSetup } from "codemirror";
 import { EditorState, Extension } from "@codemirror/state";
 import { VIEW_TYPE_TXT } from '../constants'
 import LoaderPlugin from "../main";
-import { LineNumbersSetting } from "../setting-data";
 import { lineNumbers } from "@codemirror/view";
+import { ConvertToViewSetting } from "../helpers/view-settings-converter";
 
 export default class TxtView extends TextFileView {
 
@@ -35,10 +35,11 @@ export default class TxtView extends TextFileView {
 
 	getExtensions(): Extension[] {
 		const settings = this.plugin.settings;
-		if(settings.txtSetting.lineNumbers == LineNumbersSetting.No)
-			return [];
+		const viewSettings = ConvertToViewSetting(settings.txtSetting, this.app.vault);
+		if(viewSettings.showLineNumbers)
+			return [lineNumbers()];
 		else
-			return [lineNumbers()]
+			return [];
 	}
 	
 	// gets the title of the document
