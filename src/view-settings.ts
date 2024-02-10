@@ -1,3 +1,4 @@
 export interface ViewSettings {
-	showLineNumbers: boolean
+	showLineNumber: boolean,
+	readableLineLength: boolean
 }

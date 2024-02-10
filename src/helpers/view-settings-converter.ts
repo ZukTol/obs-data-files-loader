@@ -1,19 +1,20 @@
-import { ExtSettings, LineNumbersSetting } from "../setting-data";
+import { ExtSettings, ThreeStateSetting } from "../setting-data";
 import { ViewSettings } from "../view-settings";
 import { Vault } from "obsidian";
 
 function ConvertToViewSetting(pluginViewSetting: ExtSettings, vault: Vault): ViewSettings {
 	return {
-		showLineNumbers: GetLineNumbers(pluginViewSetting.lineNumbers, vault)
+		showLineNumber: GetBoolFromThreeState(pluginViewSetting.showLineNumber, vault, "showLineNumber"),
+		readableLineLength: GetBoolFromThreeState(pluginViewSetting.readableLineLength, vault, "readableLineLength")
 	};
 }
 
-function GetLineNumbers(lineNumbersSetting: LineNumbersSetting, vault: Vault): boolean {
+function GetBoolFromThreeState(lineNumbersSetting: ThreeStateSetting, vault: Vault, vaultSetting: string): boolean {
 	switch (lineNumbersSetting) {
-		case LineNumbersSetting.System:
-			const vaultConfigValue = (this.app.vault as any).getConfig("showLineNumber");
+		case ThreeStateSetting.System:
+			const vaultConfigValue = (vault as any).getConfig(vaultSetting);
 			return vaultConfigValue.toLowerCase() == "true";
-		case LineNumbersSetting.Yes:
+		case ThreeStateSetting.Yes:
 			return true;
 		default:
 			return false;

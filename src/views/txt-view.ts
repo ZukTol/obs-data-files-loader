@@ -36,7 +36,7 @@ export default class TxtView extends TextFileView {
 	getExtensions(): Extension[] {
 		const settings = this.plugin.settings;
 		const viewSettings = ConvertToViewSetting(settings.txtSetting, this.app.vault);
-		if(viewSettings.showLineNumbers)
+		if(viewSettings.showLineNumber)
 			return [lineNumbers()];
 		else
 			return [];

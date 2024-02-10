@@ -1,4 +1,4 @@
-export enum LineNumbersSetting {
+export enum ThreeStateSetting {
 	System = 0,
 	No = 1,
 	Yes = -1
@@ -7,7 +7,8 @@ export enum LineNumbersSetting {
 export interface ExtSettings {
 	doCreate: boolean,
 	doLoad: boolean,
-	lineNumbers: LineNumbersSetting
+	showLineNumber: ThreeStateSetting,
+	readableLineLength: ThreeStateSetting
 }
 
 export interface PluginSettings {
@@ -22,7 +23,8 @@ export const DEFAULT_SETTINGS: PluginSettings = {
 	txtSetting: {
 		doCreate: true,
 		doLoad: true,
-		lineNumbers: LineNumbersSetting.System
+		showLineNumber: ThreeStateSetting.System,
+		readableLineLength: ThreeStateSetting.System
 	},
 	doLoadXml: true,
 	doCreateXml: true,
