@@ -1,8 +1,10 @@
 import { TextFileView, WorkspaceLeaf } from "obsidian";
-import { basicSetup, EditorView } from "codemirror";
-import { EditorState } from "@codemirror/state";
+import { basicSetup, EditorView, minimalSetup } from "codemirror";
+import { EditorState, Extension } from "@codemirror/state";
 import { VIEW_TYPE_TXT } from '../constants'
 import LoaderPlugin from "../main";
+import { lineNumbers } from "@codemirror/view";
+import { ConvertToViewSetting } from "../helpers/view-settings-converter";
 
 export default class TxtView extends TextFileView {
 
@@ -17,11 +19,13 @@ export default class TxtView extends TextFileView {
 
 	onload(): void {
 		super.onload();
+		const basicExtensions = this.getExtensions();
 		this.editorEl = this.contentEl.createDiv("mod-cm5");
 		this.cmEditor = new EditorView({
 			state: EditorState.create({
 				extensions: [
-					basicSetup,
+					minimalSetup,
+					...basicExtensions
 				],
 			}),
 			parent: this.editorEl,
@@ -29,6 +33,15 @@ export default class TxtView extends TextFileView {
 		this.app.workspace.trigger("codemirror", this.cmEditor);
 	}
 
+	getExtensions(): Extension[] {
+		const settings = this.plugin.settings;
+		const viewSettings = ConvertToViewSetting(settings.txtSetting, this.app.vault);
+		if(viewSettings.showLineNumber)
+			return [lineNumbers()];
+		else
+			return [];
+	}
+	
 	// gets the title of the document
 	getDisplayText(): string {
 		if (this.file) {

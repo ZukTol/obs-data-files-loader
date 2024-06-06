@@ -1,7 +1,6 @@
 import esbuild from "esbuild";
 import process from "process";
 import builtins from "builtin-modules";
-import {json} from "@codemirror/lang-json";
 
 const banner =
 `/*
