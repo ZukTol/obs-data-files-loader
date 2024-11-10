@@ -2,8 +2,8 @@ import { Plugin, TFile, WorkspaceLeaf } from 'obsidian';
 import LoaderSettingTab from './loader-settings-tab';
 import * as constants from './constants'
 import { path } from "./utils";
-import JsonView from "./views/JsonView";
-import TxtView from "./views/TxtView";
+import JsonView from "./views/json-view";
+import TxtView from "./views/txt-view";
 
 interface LoaderPluginSettings {
 	doLoadTxt: boolean;
