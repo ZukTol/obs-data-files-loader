@@ -1,7 +1,7 @@
 import { TextFileView, WorkspaceLeaf } from "obsidian";
 import { basicSetup, EditorView } from "codemirror";
 import { json } from "@codemirror/lang-json";
-import { EditorState } from "@codemirror/state";
+import { EditorState, Extension } from "@codemirror/state";
 import { VIEW_TYPE_JSON } from '../constants'
 import LoaderPlugin from "../main";
 
@@ -18,13 +18,15 @@ export default class JsonView extends TextFileView {
 
 	onload(): void {
 		super.onload();
-		this.editorEl = this.contentEl.createDiv("mod-cm5");
+		this.editorEl = this.contentEl.createDiv("markdown-source-view mod-cm6");
+		let extensions: Extension[] = [];
+		extensions = [
+			basicSetup,
+			json()
+		]
 		this.cmEditor = new EditorView({
 			state: EditorState.create({
-				extensions: [
-					basicSetup,
-					json()
-				],
+				extensions: extensions,
 			}),
 			parent: this.editorEl,
 		})
