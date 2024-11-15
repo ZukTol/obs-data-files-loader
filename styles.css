@@ -7,25 +7,17 @@ If your plugin does not need CSS, delete this file.
 
 */
 
-.markdown-source-view1.mod-cm6 .cm-gutters1 {
+.markdown-source-view.mod-cm6 .cm-gutters {
 	flex: 0 0 auto;
 	background-color: transparent;
 	color: var(--text-faint) !important;
 	border-right: none !important;
-	/*margin-inline-end: var(--file-folding-offset);*/
+	margin-inline-end: var(--file-folding-offset);
 	font-size: var(--font-ui-smaller);
 	z-index: 1;
 	font-variant: tabular-nums;
 }
 
-/*.ͼ1 .cm-gutters*/
-/*{*/
-/*	background-color: #f5f5f5;*/
-/*	color: #6c6c6c;*/
-/*	border-right: 1px solid #ddd;*/
-/*}*/
-/*.ͼ2 .cm-gutters */
-/*{*/
-/*	background-color: #333338;*/
-/*	color: #ccc*/
-/*}*/
+.cm-gutterElement.cm-activeLineGutter {
+	background-color: #aaeeff44;
+}
