@@ -1,7 +1,7 @@
 {
 	"id": "data-files-loader",
 	"name": "Data files loader",
-	"version": "1.0.3",
+	"version": "1.0.4",
 	"minAppVersion": "0.15.0",
 	"description": "Plugin to load data files like txt, xml, json",
 	"author": "ZukTol",
