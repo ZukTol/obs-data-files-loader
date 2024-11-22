@@ -1,9 +1,9 @@
 {
-	"id": "data-files-loader",
-	"name": "Data files loader",
+	"id": "data-files-editor",
+	"name": "Data files editor",
 	"version": "1.0.4",
 	"minAppVersion": "0.15.0",
-	"description": "Plugin to load data files like txt, xml, json",
+	"description": "Plugin to edit data files like txt, xml, json",
 	"author": "ZukTol",
 	"authorUrl": "https://github.com/ZukTol",
 	"fundingUrl": "",
