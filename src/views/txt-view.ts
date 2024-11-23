@@ -1,5 +1,8 @@
 import { TextFileView, WorkspaceLeaf } from "obsidian";
-import { basicSetup, EditorView } from "codemirror";
+import { basicSetup,  } from "codemirror";
+import { keymap, EditorView } from "@codemirror/view"
+import { indentWithTab } from "@codemirror/commands"
+import { indentUnit } from "@codemirror/language";
 import { EditorState } from "@codemirror/state";
 import { VIEW_TYPE_TXT } from '../constants'
 import LoaderPlugin from "../main";
@@ -22,6 +25,8 @@ export default class TxtView extends TextFileView {
 			state: EditorState.create({
 				extensions: [
 					basicSetup,
+					keymap.of([indentWithTab]),
+					indentUnit.of("    ")
 				],
 			}),
 			parent: this.editorEl,

@@ -1,6 +1,8 @@
 import { TextFileView, WorkspaceLeaf } from "obsidian";
-import { basicSetup, EditorView } from "codemirror";
+import { basicSetup } from "codemirror";
+import { EditorView, keymap } from "@codemirror/view"
 import { json } from "@codemirror/lang-json";
+import { indentWithTab } from "@codemirror/commands"
 import { EditorState, Extension } from "@codemirror/state";
 import { VIEW_TYPE_JSON } from '../constants'
 import LoaderPlugin from "../main";
@@ -22,6 +24,7 @@ export default class JsonView extends TextFileView {
 		let extensions: Extension[] = [];
 		extensions = [
 			basicSetup,
+			keymap.of([indentWithTab]),
 			json()
 		]
 		this.cmEditor = new EditorView({
