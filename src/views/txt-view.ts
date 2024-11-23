@@ -1,7 +1,7 @@
 import { TextFileView, WorkspaceLeaf } from "obsidian";
 import { basicSetup,  } from "codemirror";
 import { keymap, EditorView } from "@codemirror/view"
-import { indentWithTab } from "@codemirror/commands"
+import { insertTab, indentLess } from "@codemirror/commands"
 import { indentUnit } from "@codemirror/language";
 import { EditorState } from "@codemirror/state";
 import { VIEW_TYPE_TXT } from '../constants'
@@ -25,12 +25,24 @@ export default class TxtView extends TextFileView {
 			state: EditorState.create({
 				extensions: [
 					basicSetup,
-					keymap.of([indentWithTab]),
+					keymap.of([
+						{
+							key: 'Tab',
+							preventDefault: true,
+							run: insertTab,
+						},
+						{
+							key: 'Shift-Tab',
+							preventDefault: true,
+							run: indentLess,
+						},
+					]),
 					indentUnit.of("    ")
 				],
 			}),
 			parent: this.editorEl,
-		})
+		});
+		
 		this.app.workspace.trigger("codemirror", this.cmEditor);
 	}
 

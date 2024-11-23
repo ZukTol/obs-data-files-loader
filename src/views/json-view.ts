@@ -21,7 +21,7 @@ export default class JsonView extends TextFileView {
 	onload(): void {
 		super.onload();
 		this.editorEl = this.contentEl.createDiv("markdown-source-view mod-cm6");
-		let extensions: Extension[] = [];
+		let extensions: Extension[];
 		extensions = [
 			basicSetup,
 			keymap.of([indentWithTab]),
