@@ -1,11 +1,11 @@
 import { TextFileView, WorkspaceLeaf } from "obsidian";
 import { basicSetup } from "codemirror";
-import { EditorView, keymap } from "@codemirror/view"
+import { EditorView } from "@codemirror/view"
 import { json } from "@codemirror/lang-json";
-import { indentWithTab } from "@codemirror/commands"
 import { EditorState, Extension } from "@codemirror/state";
 import { VIEW_TYPE_JSON } from '../constants'
 import LoaderPlugin from "../main";
+import { getIndentByTabExtension } from "../services/indentation-provider"
 
 export default class JsonView extends TextFileView {
 
@@ -24,7 +24,7 @@ export default class JsonView extends TextFileView {
 		let extensions: Extension[];
 		extensions = [
 			basicSetup,
-			keymap.of([indentWithTab]),
+			getIndentByTabExtension(),
 			json()
 		]
 		this.cmEditor = new EditorView({

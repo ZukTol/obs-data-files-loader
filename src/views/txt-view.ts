@@ -1,11 +1,10 @@
 import { TextFileView, WorkspaceLeaf } from "obsidian";
-import { basicSetup,  } from "codemirror";
-import { keymap, EditorView } from "@codemirror/view"
-import { insertTab, indentLess } from "@codemirror/commands"
-import { indentUnit } from "@codemirror/language";
+import { basicSetup } from "codemirror";
+import { EditorView } from "@codemirror/view";
 import { EditorState } from "@codemirror/state";
 import { VIEW_TYPE_TXT } from '../constants'
 import LoaderPlugin from "../main";
+import { getInsertTabsExtension } from "../services/indentation-provider";
 
 export default class TxtView extends TextFileView {
 
@@ -25,19 +24,7 @@ export default class TxtView extends TextFileView {
 			state: EditorState.create({
 				extensions: [
 					basicSetup,
-					keymap.of([
-						{
-							key: 'Tab',
-							preventDefault: true,
-							run: insertTab,
-						},
-						{
-							key: 'Shift-Tab',
-							preventDefault: true,
-							run: indentLess,
-						},
-					]),
-					indentUnit.of("    ")
+					getInsertTabsExtension()
 				],
 			}),
 			parent: this.editorEl,
