@@ -1,7 +1,7 @@
-import { Plugin, TFile, WorkspaceLeaf } from 'obsidian';
+import {Plugin, TFile, WorkspaceLeaf} from 'obsidian';
 import LoaderSettingTab from './loader-settings-tab';
 import * as constants from './constants'
-import { path } from "./utils";
+import {path} from "./utils";
 import JsonView from "./views/json-view";
 import TxtView from "./views/txt-view";
 
@@ -34,10 +34,6 @@ export default class LoaderPlugin extends Plugin {
 		this.tryRegisterJson();
 
 		this.tryRegisterXml();
-		
-		// This adds a status bar item to the bottom of the app. Does not work on mobile apps.
-		const statusBarItemEl = this.addStatusBarItem();
-		statusBarItemEl.setText('Status Bar Text');
 
 		// This adds a settings tab so the user can configure various aspects of the plugin
 		this.addSettingTab(new LoaderSettingTab(this.app, this));
@@ -49,7 +45,7 @@ export default class LoaderPlugin extends Plugin {
 			this.registerExtensions([constants.EXT_TXT], constants.VIEW_TYPE_TXT);
 		}
 
-		if (this.settings.doCreateTxt) 
+		if (this.settings.doCreateTxt)
 			this.registerContextMenuCommand(constants.EXT_TXT);
 	}
 
@@ -58,8 +54,8 @@ export default class LoaderPlugin extends Plugin {
 			this.registerView(constants.VIEW_TYPE_JSON, (leaf: WorkspaceLeaf) => new JsonView(leaf, this));
 			this.registerExtensions([constants.EXT_JSON], constants.VIEW_TYPE_JSON);
 		}
-		 
-		if(this.settings.doCreateJson)
+
+		if (this.settings.doCreateJson)
 			this.registerContextMenuCommand(constants.EXT_JSON);
 	}
 
@@ -72,8 +68,7 @@ export default class LoaderPlugin extends Plugin {
 		}
 	}
 
-	onunload() {
-
+	onunload(): void {
 	}
 
 	async loadSettings() {
@@ -83,7 +78,7 @@ export default class LoaderPlugin extends Plugin {
 	async saveSettings() {
 		await this.saveData(this.settings);
 	}
-	
+
 	private registerContextMenuCommand(fileExt: string): void {
 		this.registerEvent(
 			this.app.workspace.on("file-menu", (menu, file) => {
@@ -95,31 +90,25 @@ export default class LoaderPlugin extends Plugin {
 						.setIcon("document")
 						.onClick(async () => {
 							console.log(parent?.path);
-							if(parent)
+							if (parent)
 								await this.createFile(parent.path, fileExt);
 						});
 				});
 			})
 		);
 	}
-	
+
 	private async createFile(dirPath: string, extension: string): Promise<void> {
-		const { vault } = this.app;
-		const { adapter } = vault;
+		const {vault} = this.app;
+		const {adapter} = vault;
 		const name = "Unknown";
 		const filePath = path.join(dirPath, `${name}.${extension}`);
 
 		try {
 			const fileExists = await adapter.exists(filePath);
-			if (fileExists) {
+			if (fileExists)
 				throw new Error(`${filePath} already exists`);
-			}
-			
-			// const dirExists = await adapter.exists(dirPath);
-			// if (!dirExists) {
-			// 	await this.createDirectory(dirPath);
-			// }
-			
+
 			const File = await vault.create(filePath, '');
 			const leaf = this.app.workspace.getLeaf(true);
 			await leaf.openFile(File);
