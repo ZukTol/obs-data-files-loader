@@ -19,7 +19,7 @@ export default class TxtView extends TextFileView {
 
 	onload(): void {
 		super.onload();
-		this.editorEl = this.contentEl.createDiv("markdown-source-view mod-cm6");
+		this.editorEl = this.contentEl.createDiv("datafile-source-view mod-cm6");
 		this.cmEditor = new EditorView({
 			state: EditorState.create({
 				extensions: [

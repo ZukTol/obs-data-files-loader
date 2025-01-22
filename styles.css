@@ -7,7 +7,7 @@ If your plugin does not need CSS, delete this file.
 
 */
 
-.markdown-source-view.mod-cm6 .cm-gutters {
+.datafile-source-view.mod-cm6 .cm-gutters {
 	flex: 0 0 auto;
 	background-color: transparent;
 	color: var(--text-faint) !important;
